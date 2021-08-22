@@ -3,7 +3,8 @@ import { store } from "../store/store";
 import io from "socket.io-client";
 import { serverStateChanged } from "../store/gameSlice";
 // const socket = io(`localhost:3000`);
-const socket = io(`${window.location.hostname}:${process.env.PORT || 3000}`);
+// const socket = io(`${window.location.hostname}:${process.env.PORT || 3000}`);
+const socket = io();
 
 // httpServer.listen(3000);
 
