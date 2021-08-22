@@ -17,9 +17,7 @@
     "skipLibCheck": true,
     "outDir": "./dist/",
     "jsx": "react"
-
-    //    "declaration": true
   },
-  "include": ["src", "package.json"],
+  "include": ["src/backend", "package.json"],
   "exclude": ["dist", "node_modules"]
 }
