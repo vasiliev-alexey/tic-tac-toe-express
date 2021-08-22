@@ -15,6 +15,8 @@
     "pre-commit": "lint-staged",
     "dev": "nodemon --watch \"src/**\" --ext \"ts,json\" --ignore \"src/**/*.test.ts\" --exec \"ts-node src/backend/server.ts\""
   },
+  "proxy": "http://localhost:3000",
+
   "repository": {
     "type": "git",
     "url": "git@github.com:vasiliev-alexey/tic-tac-toe-express.git"
