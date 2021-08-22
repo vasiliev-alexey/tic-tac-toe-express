@@ -35,8 +35,8 @@ app.get("*", (req, res) => {
 
 // app.use(cors());const app = express();
 // app.use(cors());
-
-httpServer.listen(3000);
+const port = process.env.PORT || 3000;
+httpServer.listen(port);
 //app.listen(3001);
 
 io.on("connect", (socket: Socket) => {
