@@ -7,7 +7,6 @@ import {
   resetState,
   setUserRoleO,
   setUserRoleX,
-  ZERO,
 } from "./gameSlice";
 import { nanoid } from "nanoid";
 

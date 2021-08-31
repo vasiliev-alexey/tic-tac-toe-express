@@ -1,11 +1,7 @@
-import { createHttpTerminator } from "http-terminator";
-
 import { httpServer } from "./server";
 import { io } from "socket.io-client";
 
 describe("server test", () => {
-  const httpTerminator = createHttpTerminator({ server: httpServer });
-
   afterEach((done) => {
     httpServer.close(done);
     done();
