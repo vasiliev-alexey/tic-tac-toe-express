@@ -2,25 +2,30 @@ import { createSlice } from "@reduxjs/toolkit";
 import { areAllBoxesClicked, findWinner } from "./functions";
 
 import { Logger } from "tslog";
-
 const logger: Logger = new Logger({ name: "gameSlice" });
 
 export const CROSS = "❌";
 export const ZERO = "⭕";
 const NO_BODY = "NO_BODY";
 
+const initState = {
+  userList: [] as string[],
+  gameField: [...Array<string>(9).fill(null)],
+  playerX: "",
+  playerO: "",
+  winner: null as string,
+  gameState: "init",
+  xIsNext: true,
+};
+
 const gameSlice = createSlice({
   name: "game",
-  initialState: {
-    userList: [],
-    gameField: [...Array<string>(9).fill(null)],
-    playerX: "",
-    playerO: "",
-    winner: null as string,
-    gameState: "init",
-    xIsNext: true,
-  },
+  initialState: initState,
   reducers: {
+    resetState: () => {
+      return initState;
+    },
+
     addUser: (state, action) => {
       const userSet = new Set(state.userList);
       userSet.add(action.payload);
@@ -40,13 +45,6 @@ const gameSlice = createSlice({
         state.playerO = action.payload;
       }
     },
-    resetPlayers: (state) => {
-      logger.debug("resetPlayers");
-      state.playerO = "";
-      state.playerX = "";
-      state.gameState = "init";
-    },
-
     gameRestart: (state) => {
       logger.debug("gameRestart");
       state.gameField = [...Array<string>(9).fill(null)];
@@ -84,7 +82,13 @@ const gameSlice = createSlice({
 
 const { actions, reducer } = gameSlice;
 
-export const { addUser, boxClicked, gameRestart, setUserRoleX, setUserRoleO } =
-  actions;
+export const {
+  addUser,
+  boxClicked,
+  gameRestart,
+  setUserRoleX,
+  setUserRoleO,
+  resetState,
+} = actions;
 
 export default reducer;

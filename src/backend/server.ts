@@ -1,5 +1,10 @@
 import { Server, Socket } from "socket.io";
 import { store } from "./srore-backend/store";
+
+import { Logger } from "tslog";
+
+const logger: Logger = new Logger({ name: "app-server" });
+
 import {
   addUser,
   boxClicked,
@@ -8,100 +13,97 @@ import {
   setUserRoleO,
   setUserRoleX,
 } from "./srore-backend/gameSlice";
-// const io = new Server(8080);
+
 import { createServer } from "http";
 import { AnyAction } from "@reduxjs/toolkit";
 
-// import cors from "cors";
-
 import express from "express";
 import path from "path";
+import { config } from "dotenv";
+
+config();
+
 const app = express();
-const httpServer = createServer(app);
-const io = new Server(httpServer, {
+
+export const httpServer = app.listen(process.env.PORT || 3000, () => {
+  console.log("server started");
+});
+
+//const httpServer = createServer(app);
+//httpServer.listen(process.env.PORT || 3000);
+
+export const io = new Server(httpServer, {
   cors: {
     origin: "*",
-    //  methods: ["GET", "POST"],
   },
 });
 
-console.log("base:", path.resolve(__dirname, "../../client"));
+let basePath = "../../client";
 
-app.use(express.static(path.resolve(__dirname, "../../client")));
+if (process.env.NODE_ENV === "development") {
+  basePath = "../../dist/client";
+}
+
+app.use(express.static(path.resolve(__dirname, basePath)));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../../client/index.html"));
+  res.sendFile(path.resolve(__dirname, basePath, "index.html"));
 });
 
-// app.use(cors());const app = express();
-// app.use(cors());
-const port = process.env.PORT || 3000;
-httpServer.listen(port);
-//app.listen(3001);
-
 io.on("connect", (socket: Socket) => {
-  console.log(`connect ${socket.id}`);
-
-  socket.on("ping", () => {
-    console.log("ping");
-  });
-
-  socket.on("go go", () => {
-    console.log("go go");
-  });
-  socket.on("game/userLogin", (data) => {
-    console.log("go go: ", "game/userLogin", data);
-    const data2 = addUser(data);
-    store.dispatch(data2);
-    console.log("data2", data2);
-  });
+  logger.debug(`connected client with id: ${socket.id}`);
 
   socket.on("game/userLogin", (data) => {
-    console.log("go go: ", "game/userLogin", data);
-    const data2 = addUser(data);
-    store.dispatch(data2);
-    console.log("data2", data2);
+    logger.debug("game/userLogin", data);
+    store.dispatch(addUser(data));
   });
 
   socket.on("game/boxClicked", (data) => {
-    console.log("go go: ", "game/boxClicked", data);
-    const data2 = boxClicked(data);
-    store.dispatch(data2);
-    console.log("data2", data2);
+    logger.debug("game/boxClicked", data);
+    store.dispatch(boxClicked(data));
   });
   socket.on("game/gameRestart", (data) => {
-    console.log("go go: ", "game/boxClicked", data);
-    const data2 = gameRestart();
-    store.dispatch(data2);
-    console.log("data2", data2);
-  });
-
-  socket.on("game/setUserRoleX", (data) => {
-    console.log("go go: ", "game/setUserRoleX", data);
-    const data2 = setUserRoleX(data);
-    store.dispatch(data2);
-    console.log("data2", data2);
+    logger.debug("game/boxClicked", data);
+    store.dispatch(gameRestart());
   });
 
   socket.on("game/handlePlayer", (data) => {
-    console.log("go go: ", "game/handlePlayer", data);
-    let data2: AnyAction;
+    logger.debug("game/handlePlayer", data);
+    let userSetAction: AnyAction;
     if (data.player === CROSS) {
-      data2 = setUserRoleX(data.userName);
+      userSetAction = setUserRoleX(data.userName);
     } else {
-      data2 = setUserRoleO(data.userName);
+      userSetAction = setUserRoleO(data.userName);
     }
-
-    store.dispatch(data2);
-    console.log("data2", data2);
-  });
-
-  socket.on("disconnect", () => {
-    console.log(`disconnect ${socket.id}`);
+    store.dispatch(userSetAction);
   });
 
   store.subscribe(() => {
-    console.log("dddd:", store.getState().game);
+    logger.debug("sync state with client", store.getState().game);
     socket.emit("game/stateChanged", store.getState().game);
   });
+
+  socket.on("disconnect", () => {
+    logger.info(`disconnect  client${socket.id}`);
+  });
 });
+
+// export async function shutDown(cb: () => void) {
+//   // console.log("sg");
+//   // httpServer.close();
+//   console.log("sg", io);
+//   const cl = await io.allSockets();
+//
+//   console.log("cl", cl);
+//   io.disconnectSockets(true);
+//   io.close(() => {
+//     console.log("io close");
+//   });
+//
+//   console.log("sg2");
+//
+//   httpServer.close((cb) => {
+//     console.log("ssssss");
+//   });
+//   console.log("sg3");
+// }

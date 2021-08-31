@@ -14,7 +14,6 @@ export function findWinner(boxes: string[]): string | null {
     const [a, b, c] = rows[i];
 
     if (boxes[a] && boxes[a] === boxes[b] && boxes[a] === boxes[c]) {
-      console.log("WWWWWWWWWWWWWWWWWWWWWWW", boxes[a]);
       return boxes[a];
     }
   }
