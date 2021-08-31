@@ -12,6 +12,8 @@ function Users(props: propsType): React.ReactElement {
   const data = props.userList.map((user: string) => {
     return (
       <Col key={user}>
+        {" "}
+        data-testid={`${user}-Test-Id`}
         <Avatar
           style={{
             width: `40px`,
@@ -22,7 +24,7 @@ function Users(props: propsType): React.ReactElement {
             bgColor: props.currentUser === user ? "red" : "white",
           })}
         />
-        <p>
+        <p data-testid={`${user}-Test-Id`}>
           {props.players.some((p) => p === user) ? "🖲️" : "👓"} {user}
         </p>
       </Col>
@@ -30,7 +32,7 @@ function Users(props: propsType): React.ReactElement {
   });
   return (
     <>
-      <p>Зрители и участники</p>
+      <p data-testid={"Users-Test-Id"}>Зрители и участники</p>
       {data}
     </>
   );

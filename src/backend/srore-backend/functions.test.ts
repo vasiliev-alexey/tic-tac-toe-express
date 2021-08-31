@@ -41,7 +41,7 @@ describe("test areAllBoxesClicked ", () => {
     expect(result).toBeFalsy();
 
     const rndVal = (Math.random() * 100).toFixed(0).toString();
-    boxes = boxes.map((_) => rndVal);
+    boxes = boxes.map(() => rndVal);
 
     result = areAllBoxesClicked(boxes);
     expect(result).toBeTruthy();

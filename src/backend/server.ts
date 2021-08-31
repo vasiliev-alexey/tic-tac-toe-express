@@ -14,7 +14,6 @@ import {
   setUserRoleX,
 } from "./srore-backend/gameSlice";
 
-import { createServer } from "http";
 import { AnyAction } from "@reduxjs/toolkit";
 
 import express from "express";
@@ -28,9 +27,6 @@ const app = express();
 export const httpServer = app.listen(process.env.PORT || 3000, () => {
   console.log("server started");
 });
-
-//const httpServer = createServer(app);
-//httpServer.listen(process.env.PORT || 3000);
 
 export const io = new Server(httpServer, {
   cors: {

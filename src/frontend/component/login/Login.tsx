@@ -22,7 +22,6 @@ class Login extends Component<DispatchPropsType> {
   };
 
   #onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    // this.props.onLogin(this.state.inputValue);
     event.preventDefault();
     this.props.userLogin(this.state.inputValue);
   };
@@ -31,20 +30,17 @@ class Login extends Component<DispatchPropsType> {
     return (
       <>
         <InputGroup className="mb-3">
-          <InputGroup.Text id="basic-addon1">Представьтесь</InputGroup.Text>
+          <InputGroup.Text id="basic-addon1" data-testid={"InputGroup-Test-Id"}>
+            Представьтесь
+          </InputGroup.Text>
           <FormControl
-            placeholder="Неизвестная черпаха"
             aria-label="Username"
             aria-describedby="basic-addon1"
             onChange={this.#inputTyped}
             value={this.state.inputValue}
           />
         </InputGroup>
-        <Button
-          className="board__btn btn"
-          onClick={this.#onClick}
-          disabled={!this.state.inputValid}
-        >
+        <Button onClick={this.#onClick} disabled={!this.state.inputValid}>
           Войти в игру
         </Button>
       </>

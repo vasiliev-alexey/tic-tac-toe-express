@@ -12,12 +12,6 @@ import { connect } from "react-redux";
 // type RootStateType = {};
 
 class App extends Component<ReturnType<typeof mapStateToProps>> {
-  componentDidMount(): void {
-    // super.componentDidMount();
-
-    wsService.test();
-  }
-
   render(): React.ReactElement {
     return (
       <BrowserRouter>
