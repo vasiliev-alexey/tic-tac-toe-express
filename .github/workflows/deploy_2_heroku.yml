@@ -1,19 +1,19 @@
-name: Sanity Check && Test && Deploy to GHP
+name: Deploy to Heroku
 
 on: [push]
 
 jobs:
-  lint:
+  Heroku:
     runs-on: ubuntu-20.04
     steps:
-      - name: Checkout
+      - name: Checkout 🔥️
         uses: actions/checkout@v2
 
-      - name: Install Packages
+      - name: Install Packages 🧳
         run: |
           npm install
 
-      - name: build
+      - name: build 🏗️
         run: |
           npm run build
 
