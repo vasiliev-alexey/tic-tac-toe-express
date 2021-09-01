@@ -12,8 +12,6 @@ function Users(props: propsType): React.ReactElement {
   const data = props.userList.map((user: string) => {
     return (
       <Col key={user}>
-        {" "}
-        data-testid={`${user}-Test-Id`}
         <Avatar
           style={{
             width: `40px`,

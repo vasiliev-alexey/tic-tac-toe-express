@@ -1,20 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
 import wsService from "../api/wsService";
 
+const initState = {
+  currenUserName: "",
+  userLogged: false,
+  gameField: [] as string[],
+  userList: [] as string[],
+  gameState: "init",
+  winner: "",
+  xUser: "",
+  oUser: "",
+  xIsNext: true,
+};
+
 const gameSlice = createSlice({
   name: "game",
-  initialState: {
-    currenUserName: "",
-    userLogged: false,
-    gameField: [],
-    userList: [],
-    gameState: "init",
-    winner: "",
-    xUser: "",
-    oUser: "",
-    xIsNext: true,
-  },
+  initialState: initState,
   reducers: {
+    resetState: () => {
+      return initState;
+    },
+
     userLogin: (state, action) => {
       state.currenUserName = action.payload;
       wsService.sendActionToServer(action);
@@ -61,6 +67,7 @@ export const {
   serverStateChanged,
   gameRestart,
   handlePlayer,
+  resetState,
 } = actions;
 
 export default reducer;

@@ -25,7 +25,7 @@ config();
 const app = express();
 
 export const httpServer = app.listen(process.env.PORT || 3000, () => {
-  console.log("server started");
+  logger.info("server started");
 });
 
 export const io = new Server(httpServer, {
@@ -83,23 +83,3 @@ io.on("connect", (socket: Socket) => {
     logger.info(`disconnect  client${socket.id}`);
   });
 });
-
-// export async function shutDown(cb: () => void) {
-//   // console.log("sg");
-//   // httpServer.close();
-//   console.log("sg", io);
-//   const cl = await io.allSockets();
-//
-//   console.log("cl", cl);
-//   io.disconnectSockets(true);
-//   io.close(() => {
-//     console.log("io close");
-//   });
-//
-//   console.log("sg2");
-//
-//   httpServer.close((cb) => {
-//     console.log("ssssss");
-//   });
-//   console.log("sg3");
-// }
